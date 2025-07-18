@@ -1,0 +1,67 @@
+default_language_version:
+  python: python3.13
+exclude: '^(.*\.(dic|aff|csv)$|mlruns/)'
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-ast
+        files: '^src/.*\.py$'
+      - id: check-added-large-files
+        files: '^src/.*'
+      - id: check-json
+        files: '^src/.*\.json$'
+      - id: check-toml
+        files: '^src/.*\.toml$'
+      - id: check-yaml
+        files: '^src/.*\.(yaml|yml)$'
+      - id: check-merge-conflict
+        files: '^src/.*'
+      - id: mixed-line-ending
+        args: [ '--fix=lf' ]
+        files: '^src/.*'
+      - id: check-case-conflict
+        files: '^src/.*'
+      - id: detect-private-key
+        files: '^src/.*'
+      - id: trailing-whitespace
+        files: '^src/.*'
+      - id: end-of-file-fixer
+        files: '^src/.*'
+      - id: debug-statements
+        files: '^src/.*\.py$'
+      - id: no-commit-to-branch
+        args: [ '--branch', 'develop', '--branch', 'main' ]
+        files: '^src/.*'
+
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      - id: python-check-blanket-type-ignore
+        files: '^src/.*\.py$'
+      - id: python-use-type-annotations
+        files: '^src/.*\.py$'
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: "v0.7.3"
+    hooks:
+      - id: ruff
+        args: [ '--fix' ]
+        files: '^src/.*\.py$'
+      - id: ruff-format
+        files: '^src/.*\.py$'
+
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.6.1
+    hooks:
+      - id: nbstripout
+        
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: uv run pytest tests/
+        language: system
+        files: '^src/.*\.py$'
+        pass_filenames: false
+        always_run: false

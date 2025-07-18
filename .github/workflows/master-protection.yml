@@ -1,0 +1,41 @@
+name: Branch Protection
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    branches: [ master, dev ]
+
+jobs:
+  validate-source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check source branch
+        run: |
+          source_branch="${{ github.head_ref }}"
+          base_branch="${{ github.base_ref }}"
+          
+          echo "Source branch: $source_branch"
+          echo "Base branch: $base_branch"
+          
+          if [[ $base_branch == "master" ]]; then
+            allowed_prefixes=("release/" "hotfix/" "dev")
+            branch_type="master"
+          elif [[ $base_branch == "dev" ]]; then
+            allowed_prefixes=("bugfix/" "feature/" "feat/" "refactor/" "bug/" "fix/" "chore/" "docs/" "test/" "style/")
+            branch_type="dev"
+          else
+            echo "❌ Unexpected base branch: $base_branch"
+            exit 1
+          fi
+          
+          echo "Checking against allowed prefixes for $branch_type: ${allowed_prefixes[*]}"
+          
+          for prefix in "${allowed_prefixes[@]}"; do
+            if [[ $source_branch == $prefix* ]]; then
+              echo "✅ Branch $source_branch is allowed to merge to $base_branch"
+              exit 0
+            fi
+          done
+          
+          echo "❌ Branch $source_branch is not allowed to merge to $base_branch"
+          echo "Allowed prefixes for $base_branch: ${allowed_prefixes[*]}"
+          exit 1

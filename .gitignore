@@ -1,0 +1,16 @@
+.venv
+
+# Python cache
+__pycache__/
+.env
+
+# Logging
+*.log
+
+# IDE files
+.idea/
+.vscode/
+
+src/*.egg-info/
+temp*
+data*

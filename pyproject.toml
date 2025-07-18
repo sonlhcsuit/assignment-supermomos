@@ -1,0 +1,88 @@
+[project]
+name = "expense-model"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = "~=3.13"
+dependencies = [
+    "alembic>=1.15.2",
+    "asgi-correlation-id>=4.3.4",
+    "asyncpg>=0.30.0",
+    "dependency-injector>=4.46.0",
+    "faker>=37.4.2",
+    "fastapi[standard]>=0.115.12",
+    "fastexcel>=0.14.0",
+    "formulas>=1.2.10",
+    "greenlet>=3.2.2",
+    "loguru>=0.7.3",
+    "minio>=7.2.15",
+    "openpyxl>=3.1.5",
+    "orjson>=3.10.18",
+    "polars-lts-cpu>=1.30.0",
+    "pre-commit>=4.2.0",
+    "psycopg2-binary>=2.9.10",
+    "pydantic>=2.11.4",
+    "pydantic-settings>=2.9.1",
+    "requests[security]>=2.32.3",
+    "xlsxwriter>=3.2.5",
+]
+
+[dependency-groups]
+dev = [
+    "curlify>=3.0.0",
+    "dataframe-image>=0.2.7",
+    "ipykernel>=6.29.5",
+    "pre-commit>=4.2.0",
+    "pyarrow>=20.0.0",
+    "pytest>=8.4.1",
+    "pytest-snapshot>=0.9.0",
+    "ruff>=0.11.10",
+]
+
+[tool.ruff]
+line-length = 110
+target-version = "py313"
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".venv",
+    "__pypackages__",
+    "dist",
+    "venv",
+    "migrations",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "C90", "UP", "A", "COM", "C4", "DTZ", "T10", "ICN", "ISC", "G", "PIE", "PT", "SIM", "ERA", "PL", "RUF"]
+fixable = ["ALL"]
+unfixable = []
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+ignore = ["COM812", "ISC001", "D104", "E501", "UP035", "UP006"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.isort]
+known-first-party = ["expense_model"]
+force-single-line = false
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"test_*.py" = ["D", "S101"]
+"*.py" = ["D103", "D101", "G004", "D100", "D107", "TRY201", "ERA001", "UP007"]
+
+[tool.ruff.format]
+# Use single quotes for strings
+quote-style = "single"
+# Indent with 4 spaces
+indent-style = "space"
+line-ending = "auto"
+docstring-code-format = true
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
