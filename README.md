@@ -81,20 +81,23 @@ alembic upgrade head # which is to update database schema & run seeding data
 
 ### Explanation 
 #### Question 1:
-- I believe that our data schema model is good enough in order to serve our use case from the assignment
+- I believe that our data schema model is good enough in order to serve our use case from the assignment. I think we should have 4 or 5 tables. But in the test, I go with 4 (User, EventType,Event, Registration)
+
+
 #### Question 2:
-- I implemented the very simple router to handle user retrieval. The version you are viewing is the improved version. More explanation in Q3 Section.
+- I implemented a very simple router to handle user retrieval. The version you are viewing is the improved version. More explanation in Q3 Section.
 
+- My assumption here is the idea to send email for user when they got the event such as (Transaction Completed, Event Created, Canceled). Since the notification is a huge topic and require a trivia effort (an simple endpoint which got input and write log to indicate email was sent not really worth it to implement) and that approach (using the endpoint) to send email for a user in any case, really a bad design and couldn't fit with large data thruput.
 
-- My assumption here is the idea to send email for user when they got the event such as (Transaction Completed, Event Created, Canceled). Since the notification is a huge topic and require a trivia effort (an simple endpoint which got input and write log to indicate email was sent not really worth it to implement) and that approach (using the endpoint) to send email for a user in any case, really a bad design and couldnt fit with large data thruput.
-
-- And I did already have an little design about notification system. which is rely on kafka and scalable. So for that part "email sending", please check the design at here: https://lucid.app/lucidchart/982ef936-7c39-46d2-a088-933eecdf9624/view
+- And I did already have a little design for the notification system. which rely on kafka and scalability. So for that part "email sending", please check the design at here: https://lucid.app/lucidchart/982ef936-7c39-46d2-a088-933eecdf9624/view
 
 #### Question 3
-- The main problem of the design using `User`, `Event`, and `Registration` tables is CPU-extensive effort will be put in the database instance when we query number of event hosted/attended. If we merge filter query(job, company, state, ...) & agg query (number of events) into 1 query that will be a huge problem in terms of maintenance effort. More or less, we have to sacrifice between memory/time complexity. In order to solve that we can take many approach such as using Redis as cache layer, back populate event count on update, trigger on update, migrate to Elastic Search. From my end. I will take the back populate script on update. Which mean that when user register an event, not only we have create new registration but also increase the number of event count on the user side.
+- The main problem of the design using `User`, `Event`, and `Registration` tables is CPU-extensive effort will be put in the database instance when we query the number of events hosted/attended. If we merge filter query(job, company, state, ...) & agg query (number of events) into 1 query that will be a huge problem in terms of maintenance effort. More or less, we have to sacrifice memory/time complexity. In order to solve that we can take many approaches such as using Redis as cache layer, back populate event count on update, trigger on update, migrate to Elastic Search. From my end. I will take the back-populated script on update. Which means that when user register an event, not only we have create new registration but also increase the number of event count on the user side.
 
 - Since we have a large dataset, key-set pagination is preferred. 
-- Another problem is the sending email endpoint, which I believed that writing an endpoint for that purpose is not a good idea. The logic to decide when, which, what to send notification to user (email) should be handle separately. I also mention about the architect design above.
+
+- Another problem is the sending email endpoint, which I believed that writing an endpoint for that purpose is not a good idea. The logic to decide when, which, and what to send notification to the user (email) should be handled separately. I also mentioned the architect design above.
+
 
 #### Question 4
 For query user
