@@ -41,6 +41,8 @@ def upgrade() -> None:
     sa.Column('phone_number', sa.String(length=100), nullable=True),
     sa.Column('company_name', sa.String(length=255), nullable=True),
     sa.Column('job_title', sa.String(length=100), nullable=True),
+    sa.Column('city', sa.String(length=100), nullable=True),
+    sa.Column('state', sa.String(length=100), nullable=True),
     sa.Column('last_activity_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('crm_status', sa.String(length=100), nullable=False),
     sa.Column('lead_source', sa.String(length=100), nullable=True),

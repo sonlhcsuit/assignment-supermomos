@@ -21,11 +21,13 @@ class User(BaseModelWithAuditAndId):
     phone_number: Mapped[str] = mapped_column(String(100), nullable=True)
     company_name: Mapped[str] = mapped_column(String(255), nullable=True)
     job_title: Mapped[str] = mapped_column(String(100), nullable=True)
+    city: Mapped[str] = mapped_column(String(100), nullable=True)
+    state: Mapped[str] = mapped_column(String(100), nullable=True)
     last_activity_at: Mapped[datetime.date] = mapped_column(DateTime(timezone=True), nullable=True)
     crm_status: Mapped[str] = mapped_column(String(100), default='Lead', nullable=False)
     lead_source: Mapped[str] = mapped_column(String(100), nullable=True)
-    number_events_hosted: Mapped[int] = mapped_column(Integer(), nullable=False)
-    number_events_attended: Mapped[int] = mapped_column(Integer(), nullable=False)
+    number_events_hosted: Mapped[int] = mapped_column(Integer(), nullable=False, default=0)
+    number_events_attended: Mapped[int] = mapped_column(Integer(), nullable=False, default=0)
 
     # Define relationships
     # One User can have many Events

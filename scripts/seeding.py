@@ -22,7 +22,6 @@ rd = random.Random()  # noqa: F821
 rd.seed(SEED)
 
 
-
 def gen_consistent_uuid() -> uuid.UUID:
     return uuid.UUID(int=rd.getrandbits(128))
 
@@ -43,6 +42,8 @@ def generate_users(num_users):
             phone_number=fake.phone_number(),
             company_name=fake.company(),
             job_title=fake.job(),
+            city=fake.city(),
+            state=fake.state(),
             crm_status=random.choice(crm_statuses),
             lead_source=random.choice(lead_sources),
             last_activity_at=fake.date_time_between(start_date='-1y', end_date='now', tzinfo=datetime.UTC),
@@ -66,7 +67,12 @@ def generate_event_types():
     event_types = []
     for et_data in event_types_data:
         event_types.append(
-            EventType(id=gen_consistent_uuid(),type_name=et_data['name'], description=et_data['desc'], category=et_data['cat'])
+            EventType(
+                id=gen_consistent_uuid(),
+                type_name=et_data['name'],
+                description=et_data['desc'],
+                category=et_data['cat'],
+            )
         )
     return event_types
 
@@ -175,5 +181,3 @@ def seeding_data(session: Session):
             # session.add_all(regs)
         session.add_all(rec)
         session.commit()
-
-

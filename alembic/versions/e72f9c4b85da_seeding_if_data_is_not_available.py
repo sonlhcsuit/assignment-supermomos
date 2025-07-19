@@ -16,7 +16,7 @@ from scripts.seeding import seeding_data
 
 # revision identifiers, used by Alembic.
 revision: str = 'e72f9c4b85da'
-down_revision: Union[str, None] = '4e5294d42d67'
+down_revision: Union[str, None] = 'f6db50dd579a'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

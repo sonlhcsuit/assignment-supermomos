@@ -15,7 +15,7 @@ from scripts.sync import sync_user_relation_count
 
 # revision identifiers, used by Alembic.
 revision: str = '655d9213c227'
-down_revision: Union[str, None] = 'f6db50dd579a'
+down_revision: Union[str, None] = 'e72f9c4b85da'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

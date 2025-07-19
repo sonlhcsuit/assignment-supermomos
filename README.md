@@ -99,7 +99,10 @@ alembic upgrade head # which is to update database schema & run seeding data
 #### Question 4
 For query user
 ```sh
-curl --location 'http://localhost:8000/api/users?min_events_attended=10&max_events_attended=20'
+curl --location 'http://localhost:8000/api/users?min_events_attended=10&max_events_attended=20' 
+curl --location 'http://localhost:8000/api/users?min_events_attended=10'
+curl --location 'http://localhost:8000/api/users?max_events_attended=20'
 curl --location 'http://localhost:8000/api/users?min_events_hosted=1&max_events_hosted=3'
+curl --location 'http://localhost:8000/api/users?last_name=Howad&min_events_attended=10' | jq
 
 ```
