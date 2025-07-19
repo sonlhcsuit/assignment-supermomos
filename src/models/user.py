@@ -13,7 +13,7 @@ class User(BaseModelWithAuditAndId):
     """
 
     __tablename__ = 'users'
-    __table_args__ = {'extend_existing': True}  # noqa: RUF012
+    # __table_args__ = {'extend_existing': True}  # noqa: RUF012
 
     first_name: Mapped[str] = mapped_column(String(100), nullable=False)
     last_name: Mapped[str] = mapped_column(String(100), nullable=False)

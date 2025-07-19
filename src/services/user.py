@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from models.user import User
+from src.models.user import User
 from src.repos.user import UserRepo
 from src.schemas.dto.user import UserBase, UserFilterCriteria
 
@@ -19,6 +19,8 @@ class UserService:
 
         with self.user_repo.db.sync_session() as session:
             query = self.user_repo.retrieve_user_using_criteria(criteria=criteria)
+            print(query)
+            cnt = session.query(query.subquery()).count()
             offset = (criteria.page - 1) * criteria.page_size
             query = self.user_repo.data_range(
                 query,
@@ -27,19 +29,13 @@ class UserService:
                 sort_by=criteria.sort_by,
                 sort_order=criteria.sort_order,
             )
-            records = session.execute(query).scalars()
-            print(records)
-            for record in records:
-                print(record)
-            # users = list(map(UserService.mapperUserModelToUserResponse, records))
-        return 0, []
 
-        return 0, users
+            records = session.execute(query).scalars()
+            users = list(map(UserService.mapperUserModelToUserResponse, records))
+        return cnt, users
 
     @staticmethod
     def mapperUserModelToUserResponse(user: User) -> UserBase:
-        print(user)
-        return None
         return UserBase(
             user_id=user.id,
             first_name=user.first_name,
@@ -50,5 +46,6 @@ class UserService:
             city='newyork',
             state='carolina',
             crm_status=user.crm_status,
+            created_at=user.created_at,
             last_activity_at=user.last_activity_at,
         )

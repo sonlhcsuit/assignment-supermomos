@@ -24,7 +24,7 @@ class EventType(BaseModelWithAuditAndId):
     """
 
     __tablename__ = 'event_types'
-    __table_args__ = {'extend_existing': True}  # noqa: RUF012
+    # __table_args__ = {'extend_existing': True}  # noqa: RUF012
 
     type_name: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
     description: Mapped[str] = mapped_column(Text, nullable=True)
@@ -50,7 +50,7 @@ class Event(BaseModelWithAuditAndId):
     """
 
     __tablename__ = 'events'
-    __table_args__ = {'extend_existing': True}  # noqa: RUF012
+    # __table_args__ = {'extend_existing': True}  # noqa: RUF012
 
     owner_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
     event_type_id: Mapped[uuid.UUID] = mapped_column(

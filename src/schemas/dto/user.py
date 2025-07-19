@@ -17,8 +17,10 @@ class UserBase(BaseModel):
     crm_status: str
     created_at: datetime.datetime
     last_activity_at: Optional[datetime.datetime] = None
+
     class Config:
-        orm_mode = True # Enable ORM mode for Pydantic to read from SQLAlchemy models
+        orm_mode = True  # Enable ORM mode for Pydantic to read from SQLAlchemy models
+
 
 class PaginatedUsersResponse(BaseModel):
     total_count: int
@@ -26,9 +28,11 @@ class PaginatedUsersResponse(BaseModel):
     page_size: int
     users: List[UserBase]
 
+
 class NumRange(BaseModel):
-    min_number : int = 0
-    max_number: int = 1000
+    min_number: Optional[int] = 0
+    max_number: Optional[int] = 1000
+
 
 class UserFilterCriteria(BaseModel):
     company_name: Optional[str]
@@ -42,4 +46,3 @@ class UserFilterCriteria(BaseModel):
     page: Optional[int] = 1
     sort_by: Optional[str] = 'email'
     sort_order: Optional[str] = 'asc'
-

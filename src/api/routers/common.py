@@ -96,10 +96,10 @@ async def retrieve_user(  # noqa: PLR0913
         job_title=job_title,
         city=city,
         state=state,
-        event_hosted=NumRange(min_events_hosted, max_events_hosted)
+        event_hosted=NumRange(min_number=min_events_hosted,max_number= max_events_hosted)
         if min_events_hosted or max_events_hosted
         else None,
-        event_attended=NumRange(min_events_attended, max_events_attended)
+        event_attended=NumRange(min_number=min_events_attended,max_number= max_events_attended)
         if min_events_attended or max_events_attended
         else None,
         page=page,
@@ -110,5 +110,4 @@ async def retrieve_user(  # noqa: PLR0913
     )
     total_count, user = user_service.filter_user(criteria=criteria)
 
-    return PaginatedUsersResponse(total_count=0, page=0, page_size=0, users=[])
     return PaginatedUsersResponse(total_count=total_count, page=page, page_size=page_size, users=user)

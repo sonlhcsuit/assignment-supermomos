@@ -12,7 +12,7 @@ class UserRepo:
         self.db = db
 
     def retrieve_user_using_criteria(self, criteria: UserFilterCriteria) -> Query:
-        stm = select(User)
+        stm = Query(User)
         # --- Apply Text Filters (case-insensitive, partial match) ---
         # We can go with == operator with exact match, or migrate to ES for better perf for i-like search
         if criteria.company_name:
@@ -26,22 +26,16 @@ class UserRepo:
         # In order to maintain consistency for min_number, max_number. An update on user's analytics data when they
         # register for an event is need. Since the cost of group by and count when querying maybe a huge problem
         if criteria.event_hosted:
-            min_cond, max_cond = None, None
             if criteria.event_hosted.min_number:
-                min_cond = User.number_events_hosted > criteria.event_hosted.min_number
+                stm = stm.filter(User.number_events_hosted > criteria.event_hosted.min_number)
             if criteria.event_hosted.max_number:
-                max_cond = User.number_events_hosted < criteria.event_hosted.max_number
-            conds = list(filter(lambda x: x is not None, [min_cond, max_cond]))
-            stm = stm.filter(true(), and_(**conds))
+                stm = stm.filter(User.number_events_hosted < criteria.event_hosted.max_number)
 
         if criteria.event_attended:
-            min_cond, max_cond = None, None
             if criteria.event_attended.min_number:
-                min_cond = User.number_events_hosted > criteria.event_attended.min_number
+                stm = stm.filter(User.number_events_attended > criteria.event_attended.min_number)
             if criteria.event_attended.max_number:
-                max_cond = User.number_events_hosted < criteria.event_attended.max_number
-            conds = list(filter(lambda x: x is not None, [min_cond, max_cond]))
-            stm = stm.filter(true(), and_(**conds))
+                stm = stm.filter(User.number_events_attended < criteria.event_attended.max_number)
         return stm
 
     def data_range(self, stm: Query, limit: int, offset: int, sort_by: str, sort_order: str) -> Query:  # noqa: F821

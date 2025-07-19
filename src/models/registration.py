@@ -21,7 +21,7 @@ class Registration(BaseModelWithAuditAndId):
     """
 
     __tablename__ = 'registrations'
-    __table_args__ = {'extend_existing': True}  # noqa: RUF012
+    # __table_args__ = {'extend_existing': True}  # noqa: RUF012
 
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
     event_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey('events.id'), nullable=False)

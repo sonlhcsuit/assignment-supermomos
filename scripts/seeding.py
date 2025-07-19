@@ -16,7 +16,8 @@ NUM_MIN_REGISTRATION = 20
 NUM_MAX_REGISTRATION = 60
 
 SEED = 1739
-fake = Faker.seed(SEED)
+Faker.seed(SEED)
+fake = Faker()
 rd = random.Random()  # noqa: F821
 rd.seed(SEED)
 
@@ -135,7 +136,7 @@ def generate_registration(users: list[User], events: list[Event]):
 def seeding_data(session: Session):
     with session.begin():
         rec = []
-        stm = select(User).limit(1)
+        stm = select(User.id).limit(1)
         user_cnt = session.execute(stm).scalar_one_or_none()
         if user_cnt is None:
             users = generate_users(NUM_USERS)
@@ -143,7 +144,7 @@ def seeding_data(session: Session):
             # session.add_all(users)
             # session.commit()
 
-        stm = select(EventType).limit(1)
+        stm = select(EventType.id).limit(1)
         event_type = session.execute(stm).scalar_one_or_none()
         if event_type is None:
             event_types = generate_event_types()
@@ -151,7 +152,7 @@ def seeding_data(session: Session):
             # session.add_all(event_types)
             # session.commit()
 
-        stm = select(Event).limit(1)
+        stm = select(Event.id).limit(1)
         event = session.execute(stm).scalar_one_or_none()
         if event is None:
             events = generate_events(
@@ -163,7 +164,7 @@ def seeding_data(session: Session):
             # session.add_all(events)
             # session.commit()
 
-        stm = select(Registration).limit(1)
+        stm = select(Registration.id).limit(1)
         reg = session.execute(stm).scalar_one_or_none()
         if reg is None:
             regs = generate_registration(
